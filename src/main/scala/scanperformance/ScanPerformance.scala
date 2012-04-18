@@ -73,12 +73,13 @@ object ScanPerformance {
     printf("bitmap scanned a million times in: %d ms (sanity check: %d)\n",end-start, count);
   }
   
-  def findFirstBitSet(i:Int):Int = {
-    val mod37BitPosition = Seq[Int](
+  val mod37BitPosition = Seq[Int](
       32, 0, 1, 26, 2, 23, 27, 0, 3, 16, 24, 30, 28, 11, 0, 13, 4,
       7, 17, 0, 25, 22, 31, 15, 29, 10, 12, 6, 0, 21, 14, 9, 5,
       20, 8, 19, 18
     );
+  
+  def findFirstBitSet(i:Int):Int = {
     mod37BitPosition((-i & i) % 37);
   }
 }
