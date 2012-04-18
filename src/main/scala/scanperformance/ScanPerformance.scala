@@ -42,12 +42,14 @@ object ScanPerformance {
     count = 0;
     start = System.currentTimeMillis();
     for(i <- 1 to 1000000) {
-      pool.filter( s => s.active == true).map(inst => {
-        count += 1;
+      pool.map(inst => {
+        if(inst.active == true) {
+          count += 1;
+        }
       });
     }
     end = System.currentTimeMillis();
-    printf("filter/map scanned a million times in: %d ms (sanity check: %d)\n",end-start, count);
+    printf("map scanned a million times in: %d ms (sanity check: %d)\n",end-start, count);
     
     // let's try a bitmap scan
     var bitMap:Int = {
@@ -63,8 +65,9 @@ object ScanPerformance {
     start = System.currentTimeMillis();
     for(i <- 1 to 1000000) {
       var bitMapCopy = bitMap;
+      var s = 0;
       while(bitMapCopy > 0) {
-        val s = findFirstBitSet(bitMapCopy);
+        s = findFirstBitSet(bitMapCopy);
         bitMapCopy ^= (1 << s);
         count+=1;
       }
